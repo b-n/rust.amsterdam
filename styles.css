@@ -41,6 +41,11 @@ body {
   flex-direction: column;
 }
 
+.ferris {
+  width: 50vw;
+  max-width: 500px;
+}
+
 .button {
   align-items: center;
   appearance: none;
