@@ -1,0 +1,56 @@
+/* borrowed from https://2023.rustnl.org/ */
+
+:root {
+  --color-primary-400: #b33119;
+  --color-primary-500: #A9270F;
+  --color-secondary-300: #f74C00;
+  --color-secondary-400: #e7430f;
+  --color-neutral-500: #f7c59f;
+  --color-neutral-400: #fbcfa9;
+  --color-accent-400: #f49600;
+
+  --font-family-body: 'Helvetica', sans-serif;
+  --font-family-display: 'Alfa Slab One', cursive;
+
+  --font-size-scale: 1.5;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: calc(var(--font-size-md) * var(--font-size-scale));
+  --font-size-xl: calc(var(--font-size-lg) * var(--font-size-scale));
+  --font-size-2xl: calc(var(--font-size-xl) * var(--font-size-scale));
+
+  --line-height: 1.5;
+
+  --logo: 9rem;
+}
+
+body {
+  background-color: var(--color-neutral-400);
+  color: var(--color-primary-400);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height);
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.button {
+  align-items: center;
+  appearance: none;
+  color: var(--color-primary-400);
+  cursor: pointer;
+  display: flex;
+  height: 3rem;
+  line-height: 1;
+  padding-inline: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+}
