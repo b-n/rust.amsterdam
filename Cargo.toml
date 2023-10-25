@@ -1,0 +1,25 @@
+[package]
+name = "rust-amsterdam"
+description = "The Rust Amsterdam Meetup group website"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+keywords = ["amsterdam"]
+categories = ["web-programming"]
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+[workspace]
+members = [
+  "inviteify"
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+homepage = "https://rust.amsterdam"
+repository = "https://www.github.com/b-n/rust.amsterdam"
+
+[dependencies]
