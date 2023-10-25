@@ -24,3 +24,4 @@ repository = "https://www.github.com/b-n/rust.amsterdam"
 [dependencies]
 inviteify = { version = "0.1.0", path = "inviteify/" }
 tokio = { version = "1.33.0", features = ["macros", "rt-multi-thread"] }
+clap = { version = "4.4.7", features = ["derive", "env"] }
