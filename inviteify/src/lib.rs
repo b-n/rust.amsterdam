@@ -67,8 +67,8 @@ impl Inviteify {
         self.http.authorize_link(server_id)
     }
 
-    pub fn invite_link(&self, invite_code: &str) -> String {
-        format!("{DISCORD_INVITE_BASE}{invite_code}")
+    pub fn invite_link(&self, invite: &ChannelInvite) -> String {
+        format!("{DISCORD_INVITE_BASE}{}", invite.code)
     }
 
     // Generate a new invite for a given discord channel.
@@ -79,7 +79,7 @@ impl Inviteify {
         &mut self,
         channel: &str,
         req: &ChannelInviteRequest,
-    ) -> Result<String, Box<dyn std::error::Error>> {
+    ) -> Result<ChannelInvite, InviteifyError> {
         // Ensure we are authenticated
         let user_id = self.whoami().await?;
 
@@ -89,18 +89,15 @@ impl Inviteify {
 
         // Check if there are other invites created by the same user that are
         // set to expire after what we require.
-        let matching_invite: Option<ChannelInvite> = self
-            .channel_invite_list(channel)
+        self.channel_invite_list(channel)
             .await?
             .into_iter()
             .filter(|invite| invite.inviter.id == user_id)
             .filter(|invite| invite.expires_at.unwrap_or(now) > request_expiry)
-            .find(|_| true);
-
-        match matching_invite {
-            Some(invite) => Ok(invite.code),
-            _ => Ok(self.channel_invite_create(channel, req).await?.code),
-        }
+            .find(|_| true) //get the first element if there is one, or
+            .map_or(self.channel_invite_create(channel, req).await, |invite| {
+                Ok(invite)
+            })
     }
 
     async fn channel_invite_list(
