@@ -1,7 +1,10 @@
 use clap::{command, Parser, Subcommand};
-use inviteify::{ChannelInviteRequest, Inviteify};
+use inviteify::Inviteify;
 use std::path::{Path, PathBuf};
 use std::{env, fs, io};
+
+static INVITE_MIN_AGE_SECONDS: u64 = 86400 * 7;
+static INVITE_MAX_AGE_SECONDS: u64 = 86400 * 10;
 
 fn default_build_path() -> PathBuf {
     let mut p = env::current_dir().expect("Unable to locate current working directory");
@@ -99,12 +102,12 @@ async fn build(
     fs::create_dir(output_dir)?;
 
     // Generate QR Code
-    let req = ChannelInviteRequest {
-        max_age: 86400,
-        ..ChannelInviteRequest::default()
-    };
+    let min_age = INVITE_MIN_AGE_SECONDS;
+    let max_age = INVITE_MAX_AGE_SECONDS;
 
-    let invite = service.check_and_generate_invite(channel_id, &req).await?;
+    let invite = service
+        .check_and_generate_invite(channel_id, min_age, max_age)
+        .await?;
 
     let qrcode = service
         .invite_qrcode(&invite)?

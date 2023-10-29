@@ -81,19 +81,26 @@ impl Inviteify {
 
     // Generate a new invite for a given discord channel.
     //
-    // Will return an invite that matches the max_age if one already exists and
-    // is created by the same user (the bot).
+    // Will return an invite that matches expires greater than the min_age if it exists, or will
+    // create a new invite (based on max age) and return that.
     pub async fn check_and_generate_invite(
         &mut self,
         channel: &str,
-        req: &ChannelInviteRequest,
+        min_age: u64,
+        max_age: u64,
     ) -> Result<ChannelInvite, InviteifyError> {
+        // Generate QR Code
+        let req = ChannelInviteRequest {
+            max_age,
+            ..ChannelInviteRequest::default()
+        };
+
         // Ensure we are authenticated
         let user_id = self.whoami().await?;
 
-        let age_duration = core::time::Duration::from_secs(req.max_age as u64);
+        let min_age_duration = core::time::Duration::from_secs(min_age);
         let now = OffsetDateTime::now_utc();
-        let request_expiry = now + age_duration;
+        let min_request_expiry = now + min_age_duration;
 
         // Check if there are other invites created by the same user that are
         // set to expire after what we require.
@@ -101,9 +108,9 @@ impl Inviteify {
             .await?
             .into_iter()
             .filter(|invite| invite.inviter.id == user_id)
-            .filter(|invite| invite.expires_at.unwrap_or(now) > request_expiry)
+            .filter(|invite| invite.expires_at.unwrap_or(now) > min_request_expiry)
             .find(|_| true) //get the first element if there is one, or
-            .map_or(self.channel_invite_create(channel, req).await, |invite| {
+            .map_or(self.channel_invite_create(channel, &req).await, |invite| {
                 Ok(invite)
             })
     }

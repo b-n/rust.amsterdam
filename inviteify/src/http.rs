@@ -23,7 +23,7 @@ pub struct ChannelInvite {
 
 #[derive(Serialize)]
 pub struct ChannelInviteRequest {
-    pub max_age: usize,
+    pub max_age: u64,
     pub max_uses: usize,
     pub temporary: bool,
     pub unique: bool,
