@@ -11,8 +11,13 @@ homepage.workspace = true
 repository.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = ['qrcode']
+qrcode = ['dep:qrcode']
+
 [dependencies]
 reqwest = { version = "0.11.22", features = ["json"] }
 serde = { version = "1.0.189", features = ["derive"] }
 serde_json = { version = "1.0.107" }
 time = { version = "0.3.30", features = ["parsing", "std", "serde"] }
+qrcode = { version = "0.12.0", optional = true }

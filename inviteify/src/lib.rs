@@ -1,5 +1,8 @@
 use time::OffsetDateTime;
 
+#[cfg(feature = "qrcode")]
+use qrcode::QrCode;
+
 mod error;
 mod http;
 
@@ -69,6 +72,11 @@ impl Inviteify {
 
     pub fn invite_link(&self, invite: &ChannelInvite) -> String {
         format!("{DISCORD_INVITE_BASE}{}", invite.code)
+    }
+
+    #[cfg(feature = "qrcode")]
+    pub fn invite_qrcode(&self, invite: &ChannelInvite) -> Result<QrCode, InviteifyError> {
+        QrCode::new(self.invite_link(invite)).map_err(|e| e.into())
     }
 
     // Generate a new invite for a given discord channel.
