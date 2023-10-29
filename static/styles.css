@@ -1,4 +1,4 @@
-/* borrowed from https://2023.rustnl.org/ */
+/* css vars borrowed from https://2023.rustnl.org/ */
 
 :root {
   --color-primary-400: #b33119;
@@ -20,8 +20,10 @@
   --font-size-2xl: calc(var(--font-size-xl) * var(--font-size-scale));
 
   --line-height: 1.5;
+}
 
-  --logo: 9rem;
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -30,32 +32,30 @@ body {
   font-family: var(--font-family-body);
   font-size: var(--font-size-md);
   line-height: var(--line-height);
+
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 500px) 1fr;
+  margin-top: 2rem;
+  align-items: center;
 }
 
-.container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+body > * {
+  grid-column: 2;
+  text-align: center;
 }
 
 .ferris {
-  width: 50vw;
-  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
 }
 
 .button {
-  align-items: center;
-  appearance: none;
   color: var(--color-primary-400);
   cursor: pointer;
-  display: flex;
-  height: 3rem;
-  line-height: 1;
-  padding-inline: 1.5rem;
-  text-align: center;
+  line-height: 1rem;
   text-decoration: none;
-  border: 2px solid transparent;
+}
+
+.button:hover {
+  text-decoration: underline;
 }
