@@ -68,7 +68,7 @@ impl Client {
         format!(
             "{DOMAIN}/oauth2/authorize?client_id={}&scope=bot&permission={}&guild_id={server_id}",
             self.client_id,
-            PERM_CREATE_INVITE & PERM_MANAGE_CHANNELS
+            PERM_CREATE_INVITE | PERM_MANAGE_CHANNELS
         )
     }
 
