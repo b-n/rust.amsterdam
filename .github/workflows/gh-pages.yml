@@ -31,6 +31,7 @@ jobs:
           ./bin/rust-amsterdam build
       - name: Upload-artifact
         uses: actions/upload-pages-artifact@v2
-        path: build/
+        with:
+          path: ./build
       - name: Publish Pages
         uses: actions/deploy-pages@v2
