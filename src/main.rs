@@ -61,16 +61,23 @@ impl std::fmt::Display for BuildError {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() {
     let args = Args::parse();
 
-    match &args.command {
+    let res = match &args.command {
         Commands::Build {
             channel_id,
             output_dir,
         } => build(&args.token, &args.client_id, channel_id, output_dir).await,
         Commands::BotInviteLink { server_id } => {
             bot_invite_link(&args.token, &args.client_id, server_id).await
+        }
+    };
+
+    match res {
+        Ok(_) => {}
+        Err(error) => {
+            panic!("Errored\n{}", error)
         }
     }
 }

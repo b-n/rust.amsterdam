@@ -46,22 +46,21 @@ impl From<QrError> for InviteifyError {
 
 #[derive(Debug)]
 pub struct APIError {
+    url: String,
     status: String,
     body: String,
 }
 
 impl APIError {
     pub async fn from_reqwest(res: reqwest::Response) -> Self {
-        let status = res.status();
+        let url = format!("{}", res.url());
+        let status = format!("{}", res.status());
         let body = res
             .text()
             .await
             .unwrap_or("Could not decode body to text".to_string());
 
-        Self {
-            status: format!("{}", status),
-            body,
-        }
+        Self { url, status, body }
     }
 }
 
@@ -69,6 +68,10 @@ impl std::error::Error for APIError {}
 
 impl std::fmt::Display for APIError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Status: {}, Body: {}", self.status, self.body)
+        write!(
+            f,
+            "URL: {}, Status: {}, Body: {}",
+            self.url, self.status, self.body
+        )
     }
 }
