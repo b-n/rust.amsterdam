@@ -6,7 +6,7 @@ use qrcode::QrCode;
 mod error;
 mod http;
 
-use error::InviteifyError;
+use error::{APIError, InviteifyError};
 use http::Client;
 pub use http::{ChannelInvite, ChannelInviteRequest};
 
@@ -18,7 +18,7 @@ async fn response_json<T: serde::de::DeserializeOwned + std::fmt::Debug>(
     if res.status().is_success() {
         Ok(res.json::<T>().await?)
     } else {
-        Err(InviteifyError::APIError)
+        Err(APIError::from_reqwest(res).await.into())
     }
 }
 
